@@ -34,7 +34,7 @@ import java.net.Socket;
  * <a href="https://github.com/pgjdbc/pgjdbc">PGJDBC-library</a> uses a socket factory.
  * </p>
  * <p>
- * To us this in pgjdbc, add the following to your connection-url:
+ * To use this in pgjdbc, add the following to your connection-url:
  * <code>
  * &amp;socketFactory=org.newsclub.net.unix.socketfactory.PostgresqlAFUNIXSocketFactory&amp;socketFactoryArg=[path-to-the-unix-socket]
  * For many distros the default path is /var/run/postgresql/.s.PGSQL.5432
