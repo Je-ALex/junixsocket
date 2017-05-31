@@ -27,6 +27,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketImpl;
 import java.net.SocketOptions;
+import java.net.SocketTimeoutException;
 
 /**
  * The Java-part of the {@link AFUNIXSocket} implementation.
@@ -181,9 +182,16 @@ class AFUNIXSocketImpl extends SocketImpl {
       }
       try {
         return NativeUnixSocket.read(fd, buf, off, len);
-      } catch (final IOException e) {
-        throw new IOException(e.getMessage() + " at "
-            + AFUNIXSocketImpl.this.toString(), e);
+      } catch (IOException e) {
+        String message = e.getMessage() + " at " + AFUNIXSocketImpl.this.toString();
+        if(e instanceof AFUNIXSocketException) {
+          Integer code = ((AFUNIXSocketException) e).getErrorCode();
+          if(code == AFUNIXSocketException.EAGAIN) {
+            throw new SocketTimeoutException(message);
+          }
+        }
+
+        throw new IOException(message, e);
       }
     }
 

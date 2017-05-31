@@ -25,21 +25,36 @@ import java.net.SocketException;
  * @author Christian Kohlschütter
  */
 public class AFUNIXSocketException extends SocketException {
+  public static final int EAGAIN = 11;
+
   private static final long serialVersionUID = 1L;
   private final String socketFile;
+  private final Integer errorCode;
 
   public AFUNIXSocketException(String reason) {
     this(reason, (String) null);
   }
 
-  public AFUNIXSocketException(String reason, final Throwable cause) {
+  public AFUNIXSocketException(String reason, Throwable cause) {
     this(reason, (String) null);
     initCause(cause);
   }
 
-  public AFUNIXSocketException(String reason, final String socketFile) {
+  public AFUNIXSocketException(String reason, String socketFile) {
     super(reason);
     this.socketFile = socketFile;
+    this.errorCode = null;
+  }
+
+  public AFUNIXSocketException(String reason, String socketFile, int errorCode) {
+    super(reason);
+    this.socketFile = socketFile;
+    this.errorCode = errorCode;
+  }
+
+
+  public Integer getErrorCode() {
+    return errorCode;
   }
 
   @Override

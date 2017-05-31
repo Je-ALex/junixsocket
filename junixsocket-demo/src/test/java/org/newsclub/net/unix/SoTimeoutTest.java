@@ -19,8 +19,15 @@ package org.newsclub.net.unix;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Tests {@link Socket#setSoTimeout(int)} behavior.
@@ -83,4 +90,31 @@ public class SoTimeoutTest extends SocketTestBase {
     }
     serverThread.getServerSocket().close();
   }
+
+  @Test(expected = SocketTimeoutException.class)
+  public void timeoutThrowsCorrectException() throws Exception {
+
+
+    final ServerThread serverThread = new ServerThread() {
+
+      @Override
+      protected void handleConnection(final Socket sock) throws IOException {
+        // Let's wait some time for a byte that never gets sent by the
+        // client
+        sock.setSoTimeout(1);
+        sock.getInputStream().read();
+
+        stopAcceptingConnections();
+      }
+    };
+
+    try (AFUNIXSocket sock = connectToServer()) {
+      serverThread.join(10000);
+    }
+
+    serverThread.checkException();
+
+    serverThread.getServerSocket().close();
+  }
+
 }
