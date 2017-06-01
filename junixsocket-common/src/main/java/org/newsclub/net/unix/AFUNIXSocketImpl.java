@@ -185,8 +185,8 @@ class AFUNIXSocketImpl extends SocketImpl {
       } catch (IOException e) {
         String message = e.getMessage() + " at " + AFUNIXSocketImpl.this.toString();
         if(e instanceof AFUNIXSocketException) {
-          Integer code = ((AFUNIXSocketException) e).getErrorCode();
-          if(code == AFUNIXSocketException.EAGAIN) {
+          Boolean timeout = ((AFUNIXSocketException) e).getTimeout();
+          if(timeout != null && timeout) {
             throw new SocketTimeoutException(message);
           }
         }

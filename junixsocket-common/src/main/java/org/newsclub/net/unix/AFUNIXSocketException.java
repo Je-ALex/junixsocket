@@ -25,11 +25,9 @@ import java.net.SocketException;
  * @author Christian Kohlschütter
  */
 public class AFUNIXSocketException extends SocketException {
-  public static final int EAGAIN = 11;
-
   private static final long serialVersionUID = 1L;
   private final String socketFile;
-  private final Integer errorCode;
+  private final Boolean timeout;
 
   public AFUNIXSocketException(String reason) {
     this(reason, (String) null);
@@ -43,18 +41,18 @@ public class AFUNIXSocketException extends SocketException {
   public AFUNIXSocketException(String reason, String socketFile) {
     super(reason);
     this.socketFile = socketFile;
-    this.errorCode = null;
+    this.timeout = null;
   }
 
-  public AFUNIXSocketException(String reason, String socketFile, int errorCode) {
+  public AFUNIXSocketException(String reason, String socketFile, boolean timeout) {
     super(reason);
     this.socketFile = socketFile;
-    this.errorCode = errorCode;
+    this.timeout = timeout;
   }
 
 
-  public Integer getErrorCode() {
-    return errorCode;
+  public Boolean getTimeout() {
+    return timeout;
   }
 
   @Override
