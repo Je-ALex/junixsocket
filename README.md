@@ -18,12 +18,12 @@ Add the following dependencies to your project:
 <dependency>
   <groupId>no.fiken.oss.junixsocket</groupId>
   <artifactId>junixsocket-common</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 <dependency>
   <groupId>no.fiken.oss.junixsocket</groupId>
   <artifactId>junixsocket-native-common</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 Connect to a socket:
@@ -39,6 +39,8 @@ It is released under the Apache 2.0 License.
 
 ### Noteworthy changes
 
+  * _(2017-06-05)_ *junixsocket 1.0.2*
+    * throwing SocketTimeoutException (instead of just IOException) in the case of timeouts
   * _(2016-09-26)_ *junixsocket 1.0.1*
     * Restored Mac-support
     * Added PostgresqlAFUNIXSocketFactory which makes it easier to use this project with pgjdbc.
